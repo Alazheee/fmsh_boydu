@@ -1,0 +1,42 @@
+#include <iostream>
+#include <string>
+
+static std::string encryptCaesar(const std::string& text, int shift, const std::string& alphabet) {
+    std::string encryptedText = "";
+    const int N = alphabet.size();
+    for (char c : text) {
+        int index = alphabet.find(c);
+        if (index != std::string::npos) {
+            int newIndex = (index + shift) % N;
+            while (newIndex < 0) newIndex += N;
+            c = alphabet[newIndex];
+        }
+        encryptedText += c;
+    }
+    return encryptedText;
+}
+
+static std::string decryptCaesar(const std::string& text, int shift, const std::string& alphabet) {
+    return encryptCaesar(text, -shift, alphabet);
+}
+
+
+int main() {
+    setlocale(LC_ALL, "ru");
+
+    const std::string alphabet = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя 0123456789!-.,:;";
+
+    const std::string sourceText = "Ему, впрочем, и некогда было разгуливать: будучи в одно и то же время директором и инспектором, он по этой последней обязанности четыре раза в день непременно обходил все классы. У нас было четыре перемены уроков, и Перский непременно побывал на каждом уроке. Придет, посидит или постоит, послушает и идет в другой класс. Решительно ни один урок без него не обходился. Обход свой он делал в сопровождении вестового, такого же, как он, рослого унтер-офицера, музыканта Ананьева. Ананьев всюду его сопровождал и открывал перед ним двери.";
+
+    const int shift = -144;
+    
+    std::cout << "Исходный текст:\n" << sourceText << std::endl;
+
+    std::string encryptedText = encryptCaesar(sourceText, shift, alphabet);
+    std::cout << "\nЗашифрованный текст:\n" << encryptedText << std::endl;
+
+    std::string decryptedText = decryptCaesar(encryptedText, shift, alphabet);
+    std::cout << "\nДешифрованный текст:\n" << decryptedText << std::endl;
+
+    return 0;
+}
